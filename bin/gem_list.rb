@@ -12,3 +12,5 @@ tuples.map do |tuple|
   holder << { name: gem.name, platform: gem.platform, version: gem.version.to_s }
 end
 puts MultiJson.dump(holder)
+
+# https://s3.amazonaws.com/cornflower1/gems-latest.json
