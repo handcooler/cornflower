@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require 'bundler/setup'
+require 'byebug'
 
 # http://stackoverflow.com/questions/21094095/how-to-get-all-gems-names-via-web
 require 'rubygems/spec_fetcher'
