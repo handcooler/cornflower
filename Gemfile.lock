@@ -3,6 +3,7 @@ GEM
   specs:
     coderay (1.1.0)
     method_source (0.8.2)
+    multi_json (1.8.2)
     pry (0.9.12.4)
       coderay (~> 1.0)
       method_source (~> 0.8)
@@ -13,4 +14,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  multi_json
   pry
