@@ -7,7 +7,7 @@ require 'multi_json'
 require 'rubygems/spec_fetcher'
 fetcher = Gem::SpecFetcher.fetcher
 tuples = fetcher.detect(:latest) { true }
-holder = {}
+holder = []
 tuples.map do |tuple|
   gem = tuple.first
   holder << { name: gem.name, platform: gem.platform, version: gem.version.to_s }
