@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'bundler/setup'
-require 'byebug'
 require 'pry'
 
 # http://stackoverflow.com/questions/21094095/how-to-get-all-gems-names-via-web
