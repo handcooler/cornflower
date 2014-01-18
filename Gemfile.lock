@@ -10,6 +10,7 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
     rack (1.5.2)
+    rack-cors (0.2.9)
     rack-rewrite (1.5.0)
     slop (3.4.7)
 
@@ -21,4 +22,5 @@ DEPENDENCIES
   oj
   pry
   rack
+  rack-cors
   rack-rewrite
