@@ -8,12 +8,12 @@ use Rack::Rewrite do
   r302 '/gems-latest.json', 'https://s3.amazonaws.com/cornflower1/gems-latest.json'
 end
 
-#use Rack::Cors do
-#  allow do
-#    origins '*'
-#    resource '/rubygems.org/api/v1/*', headers: :any, methods: :get
-#  end
-#end
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '/rubygems.org/api/v1/*', headers: :any, methods: :get
+  end
+end
 
 app = Proc.new do |env|
   if %r|\A/rubygems.org/api/v1/.*\Z| =~ env['PATH_INFO']
