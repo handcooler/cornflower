@@ -18,6 +18,7 @@ end
 app = Proc.new do |env|
   if %r|\A/rubygems.org/api/v1/.*\Z| =~ env['PATH_INFO']
     request = 'https://rubygems.org/' + env['PATH_INFO'].split('/', 3).last
+    request += '?' + env['QUERY_STRING'] if !env['QUERY_STRING'].empty?
     body = URI.parse(request).read
     Rack::Response.new(body)
   else
