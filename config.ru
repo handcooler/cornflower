@@ -13,6 +13,8 @@ use Rack::Cors do
   allow do
     origins '*'
     resource '/rubygems.org/api/v1/*', headers: :any, methods: :get
+    resource '/gems-latest.json', headers: :any, methods: :get
+    resource '/readme/github.com/*', headers: :any, methods: :get
   end
 end
 
