@@ -4,6 +4,7 @@ require 'rack/rewrite'
 require 'rack/cors'
 require 'open-uri'
 require 'octokit'
+require 'multi_json'
 
 use Rack::Rewrite do
   r302 '/gems-latest.json', 'https://s3.amazonaws.com/cornflower1/gems-latest.json'
@@ -15,6 +16,7 @@ use Rack::Cors do
     resource '/rubygems.org/api/v1/*', headers: :any, methods: :get
     resource '/gems-latest.json', headers: :any, methods: :get
     resource '/readme/github.com/*', headers: :any, methods: :get
+    resource '/tags/github.com/*', headers: :any, methods: :get
   end
 end
 
@@ -30,6 +32,12 @@ app = Proc.new do |env|
     repos = repos_with_extension.chomp('.html')
     body = Octokit.readme repos, accept: 'application/vnd.github.html'
     Rack::Response.new(body)
+  elsif %r|\A/tags/github.com/.*\Z| =~ env['PATH_INFO']
+    repos_with_extension = env['PATH_INFO'].split('/', 4).last
+    # FIXME: detect extension
+    repos = repos_with_extension.chomp('.json')
+    tags = Octokit.tags repos, accept: 'application/vnd.github.beta+json'
+    Rack::Response.new(MultiJson.dump(tags.map(&:name)))
   else
     Rack::Response.new('Not Found', 404)
   end
