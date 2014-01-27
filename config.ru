@@ -3,7 +3,7 @@ require 'rack'
 require 'rack/rewrite'
 require 'rack/cors'
 require 'open-uri'
-require 'nokogiri'
+require 'octokit'
 
 use Rack::Rewrite do
   r302 '/gems-latest.json', 'https://s3.amazonaws.com/cornflower1/gems-latest.json'
@@ -28,10 +28,7 @@ app = Proc.new do |env|
     repos_with_extension = env['PATH_INFO'].split('/', 4).last
     # FIXME: detect extension
     repos = repos_with_extension.chomp('.html')
-    request = 'https://github.com/' + repos
-    response = URI.parse(request).read
-    doc = Nokogiri::HTML(response)
-    body = doc.css('div#readme').to_html
+    body = Octokit.readme repos, accept: 'application/vnd.github.html'
     Rack::Response.new(body)
   else
     Rack::Response.new('Not Found', 404)
