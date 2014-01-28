@@ -37,7 +37,10 @@ app = Proc.new do |env|
     # FIXME: detect extension
     repos = repos_with_extension.chomp('.json')
     tags = Octokit.tags repos, accept: 'application/vnd.github.beta+json'
-    Rack::Response.new(MultiJson.dump(tags.map(&:name)))
+    # NOTE: ["v4.0.3", "v4.0.0.rc.1", "v2.1.0", "v2.0.0"]
+    tag_values = tags.map(&:name)
+    # NOTE: {"v4.0.3":"v4.0.3","v4.0.0.rc.1":"v4.0.0.rc.1","v2.1.0":"v2.1.0","v2.0.0":"v2.0.0"}
+    Rack::Response.new(MultiJson.dump(Hash[tag_values.zip(tag_values)]))
   else
     Rack::Response.new('Not Found', 404)
   end
