@@ -10,6 +10,7 @@ GEM
     method_source (0.8.2)
     multi_json (1.8.4)
     multipart-post (2.0.0)
+    newrelic_rpm (3.7.0.177)
     octokit (2.7.0)
       sawyer (~> 0.5.2)
     oj (2.5.4)
@@ -34,6 +35,7 @@ PLATFORMS
 
 DEPENDENCIES
   multi_json
+  newrelic_rpm
   octokit
   oj
   pry
