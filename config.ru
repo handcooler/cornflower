@@ -5,6 +5,23 @@ require 'rack/cors'
 require 'open-uri'
 require 'octokit'
 require 'multi_json'
+require 'newrelic_rpm'
+require 'new_relic/agent/instrumentation/rack'
+
+#http://blog.udzura.jp/2011/10/12/new-relic-on-sinatra-or-rack-app-generic/
+class AppMetric
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    @app.call(env)
+  end
+  # Do the include after the call method is defined:
+  include NewRelic::Agent::Instrumentation::Rack
+end
+
+use AppMetric
 
 use Rack::Rewrite do
   r302 '/gems-latest.json', 'https://s3.amazonaws.com/cornflower1/gems-latest.json'
