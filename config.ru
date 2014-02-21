@@ -55,6 +55,8 @@ app = Proc.new do |env|
     repos = repos_with_extension.chomp('.json')
     tags = Octokit.tags repos, accept: 'application/vnd.github.beta+json'
     Rack::Response.new(MultiJson.dump(tags.map(&:name)))
+  elsif '/ping' == env['PATH_INFO']
+    Rack::Response.new('It works.')
   else
     Rack::Response.new('Not Found', 404)
   end
