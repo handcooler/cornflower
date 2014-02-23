@@ -60,7 +60,7 @@ app = Proc.new do |env|
   elsif %r|\A/repository/.*\Z| =~ env['PATH_INFO']
     _, _, gem_name, _ = env['PATH_INFO'].split('/',4)
     body = Rubygems::CodeFinder.url gem_name
-    response = {name: gem_name, repositoryUri: body}
+    response = {name: gem_name, repository: body}
     Rack::Response.new(MultiJson.dump(response))
   elsif '/ping' == env['PATH_INFO']
     Rack::Response.new('It works.')
