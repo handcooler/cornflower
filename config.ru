@@ -35,7 +35,7 @@ use Rack::Cors do
     resource '/gems-latest.json', headers: :any, methods: :get
     resource '/readme/github.com/*', headers: :any, methods: :get
     resource '/tags/github.com/*', headers: :any, methods: :get
-    resource '/repository/*', headers: :any, methods: :get
+    resource '/rubygems/repository/*', headers: :any, methods: :get
   end
 end
 
@@ -59,8 +59,8 @@ app = Proc.new do |env|
     repos = repos_with_extension.chomp('.json')
     tags = Octokit.tags repos, accept: 'application/vnd.github.beta+json'
     Rack::Response.new(MultiJson.dump(tags.map(&:name)))
-  elsif %r|\A/repository/.*\Z| =~ env['PATH_INFO']
-    _, _, gem_name, _ = env['PATH_INFO'].split('/',4)
+  elsif %r|\A/rubygems/repository/.*\Z| =~ env['PATH_INFO']
+    _, _, _, gem_name, _ = env['PATH_INFO'].split('/',5)
     body = Rubygems::CodeFinder.url gem_name
     response = {name: gem_name, repository: body}
     Rack::Response.new(MultiJson.dump(response))
