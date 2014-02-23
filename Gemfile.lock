@@ -21,6 +21,10 @@ GEM
     rack (1.5.2)
     rack-cors (0.2.9)
     rack-rewrite (1.5.0)
+    rubygems-code_finder (0.0.4)
+      faraday
+      multi_json
+      octokit
     sawyer (0.5.3)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
@@ -42,4 +46,5 @@ DEPENDENCIES
   rack
   rack-cors
   rack-rewrite
+  rubygems-code_finder
   thin

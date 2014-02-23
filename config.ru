@@ -7,6 +7,7 @@ require 'octokit'
 require 'multi_json'
 require 'newrelic_rpm'
 require 'new_relic/agent/instrumentation/rack'
+require 'rubygems-code_finder'
 
 #http://blog.udzura.jp/2011/10/12/new-relic-on-sinatra-or-rack-app-generic/
 class AppMetric
@@ -34,6 +35,7 @@ use Rack::Cors do
     resource '/gems-latest.json', headers: :any, methods: :get
     resource '/readme/github.com/*', headers: :any, methods: :get
     resource '/tags/github.com/*', headers: :any, methods: :get
+    resource '/repository/*', headers: :any, methods: :get
   end
 end
 
@@ -55,6 +57,11 @@ app = Proc.new do |env|
     repos = repos_with_extension.chomp('.json')
     tags = Octokit.tags repos, accept: 'application/vnd.github.beta+json'
     Rack::Response.new(MultiJson.dump(tags.map(&:name)))
+  elsif %r|\A/repository/.*\Z| =~ env['PATH_INFO']
+    _, _, gem_name, _ = env['PATH_INFO'].split('/',4)
+    body = Rubygems::CodeFinder.url gem_name
+    response = {name: gem_name, repository: body}
+    Rack::Response.new(MultiJson.dump(response))
   elsif '/ping' == env['PATH_INFO']
     Rack::Response.new('It works.')
   else
